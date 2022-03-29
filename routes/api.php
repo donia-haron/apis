@@ -18,22 +18,23 @@ use App\Http\Controllers\RegistrationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 //user apis
- Route::get('/user', [UserController::class, 'getall']);
- Route::get('/user/{id}', [UserController::class, 'getbyid']);
- 
- Route::get('/useremail/{id}', [UserController::class, 'getusername']);
- Route::get('/user/car/{id}', [UserController::class, 'getusercar']);
- Route::post('/user/insert', [UserController::class, 'insert']);
- Route::post('/user/delete/{id}', [UserController::class, 'delete']);
- Route::post('/user/update/{id}', [UserController::class, 'update']);
- 
- Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
- 
+Route::get('/user', [UserController::class, 'getall']);
+Route::get('/user/{id}', [UserController::class, 'getbyid']);
+
+Route::get('/useremail/{id}', [UserController::class, 'getusername']);
+Route::get('/user/car/{id}', [UserController::class, 'getusercar']);
+Route::post('/user/insert', [UserController::class, 'insert']);
+Route::post('/user/delete/{id}', [UserController::class, 'delete']);
+Route::post('/user/update/{id}', [UserController::class, 'update']);
+
+Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
+
 //car apis
 
 Route::get('/car', [CarController::class, 'getall']);
