@@ -39,6 +39,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function getallsecurity($id)
+    {
+        $user = DB::table('parkingsecuritys')->where('parking_id', $id)->get();
+        return response()->json($user);
+    }
+
     public function insert(Request $request)
     {
         $user = new user();
