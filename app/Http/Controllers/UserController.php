@@ -41,8 +41,11 @@ class UserController extends Controller
 
     public function getallsecurity($id)
     {
-        $user = DB::table('parkingsecuritys')->where('parking_id', $id)->get();
-        return response()->json($user);
+        $security = DB::table('users')->where('role', 'securityman')->get();
+        $parking = DB::table('parkingsecuritys')->where('parking_id', $id)->get();
+        $response['security'] = $security;
+        $response['parking'] = $parking;
+        return response()->json($response);
     }
 
     public function insert(Request $request)
