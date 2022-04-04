@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -36,7 +37,11 @@ Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
 
 //admin apis
-Route::get('/security/{id}', [UserController::class, 'getallsecurity']);
+Route::get('/security/{id}', [AdminController::class, 'getallsecurity']);
+Route::post('/security/{id}', [AdminController::class, 'changestatus']);
+Route::post('/security/insert', [AdminController::class, 'insert']);
+Route::delete('/security/delete/{id}', [AdminController::class, 'delete']);
+Route::post('/security/update/{id}', [AdminController::class, 'update']);
 
 //car apis
 

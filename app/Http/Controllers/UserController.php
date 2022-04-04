@@ -39,15 +39,6 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function getallsecurity($id)
-    {
-        $security = DB::table('users')->where('role', 'securityman')->get();
-        $parking = DB::table('parkingsecuritys')->where('parking_id', $id)->get();
-        $response['security'] = $security;
-        $response['parking'] = $parking;
-        return response()->json($response);
-    }
-
     public function insert(Request $request)
     {
         $user = new user();
@@ -61,7 +52,7 @@ class UserController extends Controller
         $user->dob = $request->dob;
         $user->password = $request->password;
         $user->save();
-        return response()->json(['msg' => 'zftttttttttttt', 200]);
+        return response()->json(['msg' => 'success', 200]);
     }
 
     public function delete($id)
@@ -85,15 +76,13 @@ class UserController extends Controller
         // $user->password =$request->password;
         $user->update();
         $response["users"] = $user;
-        $response['success'] = 1;
+        $response['success'] = 200;
         return response()->json($response);
     }
     public function updatepass(Request $request, $id)
     {
         $user = new user();
         $user = user::find($id);
-
-
         $user->password = $request->password;
         $user->update();
         $response["users"] = $user;
