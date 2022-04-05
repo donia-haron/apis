@@ -3,33 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\security;
+use App\Models\parkingsecurity;
 use Illuminate\Support\Facades\DB as DB;
 
 class AdminController extends Controller
 {
+    public function getparkingid($id)
+    {
+        $user = DB::table('users')->where('id', $id)->get();
+        $parking = DB::table('parkingspaces')->where('admin_id', $id)->get();
+        $response['user'] = $user;
+        $response['parking'] = $parking;
+        return response()->json($response);
+    }
+    public function getbyemail($email)
+    {
+        $user = DB::table('users')->where('email', $email)->get();
+        $response['user'] = $user;
+        return response()->json($response);
+    }
     public function getallsecurity($id)
     {
-        $security = DB::table('users')->where('role', 'securityman')->get();
-        $parking = DB::table('parkingsecuritys')->where('parking_id', $id)->get();
+        $security = DB::table('parkingsecurities')->where('parking_id', $id)->get();
         $response['security'] = $security;
-        $response['parking'] = $parking;
         return response()->json($response);
     }
     public function changestatus(Request $request, $id)
     {
-        $security = new security();
-        $security = security::find($id);
+        $security = new parkingsecurity();
+        $security = parkingsecurity::find($id);
         $security->status = $request->status;
         $security->update();
         $response["security"] = $security;
-        $response['success'] = 200;
         return response()->json($response);
     }
     public function insert(Request $request)
     {
-        $security = new security();
-        $security->id = $request->id;
+        $security = new parkingsecurity();
+        $security->security_id = $request->security_id;
         $security->name = $request->name;
         $security->email = $request->email;
         $security->address = $request->address;
@@ -38,21 +49,24 @@ class AdminController extends Controller
         $security->status = $request->status;
         $security->dob = $request->dob;
         $security->work_hours = $request->work_hours;
-        $security->date = $request->date;
+        $security->created_at = $request->created_at;
+        $security->parking_id = $request->parking_id;
         $security->save();
-        return response()->json(['msg' => 'success', 200]);
+        $response["security"] = $security;
+        return response()->json($response);
     }
     public function delete($id)
     {
-        $security = security::find($id);
+        $security = parkingsecurity::find($id);
         $security->delete();
-        return response()->json('Removed successfully.');
+        $response["security"] = $security;
+        return response()->json($response);
     }
     public function update(Request $request, $id)
     {
-        $security = new security();
-        $security = security::find($id);
-        $security->id = $request->id;
+        $security = new parkingsecurity();
+        $security = parkingsecurity::find($id);
+        $security->security_id = $request->security_id;
         $security->name = $request->name;
         $security->email = $request->email;
         $security->address = $request->address;
@@ -61,10 +75,9 @@ class AdminController extends Controller
         $security->status = $request->status;
         $security->dob = $request->dob;
         $security->work_hours = $request->work_hours;
-        $security->date = $request->date;
+        $security->created_at = $request->created_at;
         $security->update();
         $response["security"] = $security;
-        $response['success'] = 200;
         return response()->json($response);
     }
 }

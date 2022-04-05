@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class security extends Model
+class parkingsecurity extends Model
 {
     public $timestamps = false;
     protected $fillable = [
@@ -19,7 +19,7 @@ class security extends Model
         'status',
         'dob',
         'work_hours',
-        'date',
+        'created_at',
     ];
     use HasFactory;
 }

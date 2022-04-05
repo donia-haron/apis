@@ -50,9 +50,10 @@ class ParkingspaceController extends Controller
         $parkingspace->fees = $request->fees;
         $parkingspace->category = $request->category;
         $parkingspace->levels = $request->levels;
-        $parkingspace->img = $request->img;
+        // $parkingspace->img = $request->img;
         $parkingspace->save();
-        return response()->json(['msg' => 'zftttttttttttt', 200]);
+        $response['parkingspace'] = $parkingspace;
+        return response()->json($response);
     }
 
     public function delete($id)

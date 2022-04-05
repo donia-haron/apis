@@ -37,7 +37,8 @@ class ParkingslotController extends Controller
         $parkingslot->parking_id = $request->parking_id;
         $parkingslot->status = $request->status;
         $parkingslot->save();
-        return response()->json(['msg' => 'zftttttttttttt', 200]);
+        $response['parkingslot'] = $parkingslot;
+        return response()->json($response);
     }
 
     public function delete($id)
