@@ -10,16 +10,16 @@ class parkingsecurity extends Model
     public $timestamps = false;
     protected $fillable = [
         //if id is not autoincrement then add 'id'
-        'id',
+        'parking_id',
+        'security_id',
         'name',
-        'address',
         'email',
         'gender',
-        'phone',
-        'status',
+        'address',
         'dob',
         'work_hours',
-        'created_at',
+        'phone',
+        'status',
     ];
     use HasFactory;
 }

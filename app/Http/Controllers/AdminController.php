@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\DB as DB;
 
 class AdminController extends Controller
 {
+    public function getstatistics($id)
+    {
+        $registrations = DB::table('registrations')->where('parking_id', $id)->get();
+        $availableslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'available')->get();
+        $outslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'out of order')->get();
+        $response['registrations'] = $registrations;
+        $response['available_slots'] = $availableslots;
+        $response['out_slots'] = $outslots;
+        return response()->json($response);
+    }
     public function getparkingid($id)
     {
         $user = DB::table('users')->where('id', $id)->get();
@@ -37,20 +47,19 @@ class AdminController extends Controller
         $response["security"] = $security;
         return response()->json($response);
     }
-    public function insert(Request $request)
+    public function insert(Request $request, $id)
     {
         $security = new parkingsecurity();
+        $security->parking_id = $id;
         $security->security_id = $request->security_id;
         $security->name = $request->name;
         $security->email = $request->email;
-        $security->address = $request->address;
         $security->gender = $request->gender;
-        $security->phone = $request->phone;
-        $security->status = $request->status;
+        $security->address = $request->address;
         $security->dob = $request->dob;
         $security->work_hours = $request->work_hours;
-        $security->created_at = $request->created_at;
-        $security->parking_id = $request->parking_id;
+        $security->phone = $request->phone;
+        $security->status = $request->status;
         $security->save();
         $response["security"] = $security;
         return response()->json($response);
@@ -69,13 +78,13 @@ class AdminController extends Controller
         $security->security_id = $request->security_id;
         $security->name = $request->name;
         $security->email = $request->email;
-        $security->address = $request->address;
         $security->gender = $request->gender;
-        $security->phone = $request->phone;
-        $security->status = $request->status;
+        $security->address = $request->address;
         $security->dob = $request->dob;
         $security->work_hours = $request->work_hours;
-        $security->created_at = $request->created_at;
+        $security->phone = $request->phone;
+        // $security->status = $request->status;
+        // $security->created_at = $request->created_at;
         $security->update();
         $response["security"] = $security;
         return response()->json($response);

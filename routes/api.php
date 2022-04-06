@@ -37,11 +37,12 @@ Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
 
 //admin apis
-Route::get('/admin/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/admin/{email}', [AdminController::class, 'getbyemail']);
+Route::get('admin/dashboard/{id}', [AdminController::class, 'getstatistics']);
+Route::get('/parking/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/security/{id}', [AdminController::class, 'getallsecurity']);
 Route::post('/security/{id}', [AdminController::class, 'changestatus']);
-Route::post('/security/insert', [AdminController::class, 'insert']);
+Route::post('/security/{id}/insert', [AdminController::class, 'insert']);
 Route::delete('/security/delete/{id}', [AdminController::class, 'delete']);
 Route::post('/security/update/{id}', [AdminController::class, 'update']);
 
