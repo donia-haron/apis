@@ -37,9 +37,12 @@ Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
 
 //admin apis
-Route::get('/admin/{email}', [AdminController::class, 'getbyemail']);
-Route::get('admin/dashboard/{id}', [AdminController::class, 'getstatistics']);
-Route::get('/parking/{id}', [AdminController::class, 'getparkingid']);
+Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);
+Route::get('/admin/dashboard/{id}', [AdminController::class, 'getstatistics']);
+Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
+Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
+
+//security apis
 Route::get('/security/{id}', [AdminController::class, 'getallsecurity']);
 Route::post('/security/{id}', [AdminController::class, 'changestatus']);
 Route::post('/security/{id}/insert', [AdminController::class, 'insert']);
@@ -93,6 +96,7 @@ Route::post('/parkingslot/updatestatus/{id}', [ParkingslotController::class, 'up
 //registrations apis
 
 Route::get('/registration', [RegistrationController::class, 'getall']);
+Route::get('/registration/today/{id}', [RegistrationController::class, 'gettoday']);
 Route::get('/registration/{id}', [RegistrationController::class, 'getbyid']);
 Route::get('/registration/parking/{id}', [RegistrationController::class, 'getbyparkingid']);
 Route::get('/registration/user/{id}', [RegistrationController::class, 'getbyuserid']);

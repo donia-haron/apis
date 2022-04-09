@@ -16,6 +16,13 @@ class RegistrationController extends Controller
         return response()->json($response);
     }
 
+    public function gettoday($id)
+    {
+        $registration = DB::table('registrations')->where('date', $id)->get();
+        $response["registration"] = $registration;
+        return response()->json($response);
+    }
+
     public function getbyid($id)
     {
         $registration = DB::table('registrations')->where('id', $id)->get();

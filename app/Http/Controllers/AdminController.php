@@ -26,9 +26,16 @@ class AdminController extends Controller
         $response['parking'] = $parking;
         return response()->json($response);
     }
-    public function getbyemail($email)
+    public function getid($id)
     {
-        $user = DB::table('users')->where('email', $email)->get();
+        $admin_id = DB::table('parkingspaces')->where('id', $id)->pluck('admin_id');
+        $user = DB::table('users')->where('id', $admin_id)->get();
+        $response['user'] = $user;
+        return response()->json($response);
+    }
+    public function getbyemail($id)
+    {
+        $user = DB::table('users')->where('email', $id)->get();
         $response['user'] = $user;
         return response()->json($response);
     }
