@@ -4,18 +4,52 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\parkingsecurity;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use DateInterval;
+use DatePeriod;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB as DB;
 
 class AdminController extends Controller
 {
-    public function getstatistics($id)
+    public function getdailystatistics($id)
     {
-        $registrations = DB::table('registrations')->where('parking_id', $id)->get();
+        $today = date('Y-m-d');
+        $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->get();
         $availableslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'available')->get();
         $outslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'out of order')->get();
         $response['registrations'] = $registrations;
         $response['available_slots'] = $availableslots;
         $response['out_slots'] = $outslots;
+        return response()->json($response);
+    }
+    public function getweeklychart($id)
+    {
+        $startolddate = Carbon::now()->subWeek()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+        $endolddate = Carbon::now()->subWeek()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+
+        $startnewdate = Carbon::now()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+        $endnewdate = Carbon::now()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+
+        $oldperiod = CarbonPeriod::create($startolddate, $endolddate);
+        $olddates = $oldperiod->toArray();
+        $newperiod = CarbonPeriod::create($startnewdate, $endnewdate);
+        $newdates = $newperiod->toArray();
+
+        $lastweek = array();
+        $thisweek = array();
+
+        for ($i = 0; $i < count($olddates); $i++) {
+            $oldvalues = DB::table('registrations')->where('parking_id', $id)->where('date', $olddates[$i])->count();
+            array_push($lastweek, $oldvalues);
+        }
+        for ($i = 0; $i < count($newdates); $i++) {
+            $oldvalues = DB::table('registrations')->where('parking_id', $id)->where('date', $newdates[$i])->count();
+            array_push($thisweek, $oldvalues);
+        }
+        $response['old_values'] = $lastweek;
+        $response['new_values'] = $thisweek;
         return response()->json($response);
     }
     public function getparkingid($id)

@@ -38,7 +38,8 @@ Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
 
 //admin apis
 Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);
-Route::get('/admin/dashboard/{id}', [AdminController::class, 'getstatistics']);
+Route::get('/admin/dashboard/{id}', [AdminController::class, 'getdailystatistics']);
+Route::get('/admin/chart/{id}', [AdminController::class, 'getweeklychart']);
 Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
 
