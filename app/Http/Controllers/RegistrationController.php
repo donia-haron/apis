@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\registration;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB as DB;
 
 class RegistrationController extends Controller
@@ -16,13 +17,6 @@ class RegistrationController extends Controller
         return response()->json($response);
     }
 
-    public function gettoday($id)
-    {
-        $registration = DB::table('registrations')->where('date', $id)->get();
-        $response["registration"] = $registration;
-        return response()->json($response);
-    }
-
     public function getbyid($id)
     {
         $registration = DB::table('registrations')->where('id', $id)->get();
@@ -31,7 +25,8 @@ class RegistrationController extends Controller
 
     public function getbyparkingid($id)
     {
-        $registration = DB::table('registrations')->where('parking_id', $id)->get();
+        $today = Carbon::now()->toDateString("Y-m-d");
+        $registration = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->get();
         $response["registration"] = $registration;
 
         return response()->json($response);

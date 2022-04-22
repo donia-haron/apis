@@ -15,7 +15,7 @@ class AdminController extends Controller
 {
     public function getdailystatistics($id)
     {
-        $today = date('Y-m-d');
+        $today = date("Y-m-d");
         $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->get();
         $availableslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'available')->get();
         $outslots = DB::table('parkingslots')->where('parking_id', $id)->where('status', 'out of order')->get();

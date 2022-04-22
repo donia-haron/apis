@@ -97,7 +97,6 @@ Route::post('/parkingslot/updatestatus/{id}', [ParkingslotController::class, 'up
 //registrations apis
 
 Route::get('/registration', [RegistrationController::class, 'getall']);
-Route::get('/registration/today/{id}', [RegistrationController::class, 'gettoday']);
 Route::get('/registration/{id}', [RegistrationController::class, 'getbyid']);
 Route::get('/registration/parking/{id}', [RegistrationController::class, 'getbyparkingid']);
 Route::get('/registration/user/{id}', [RegistrationController::class, 'getbyuserid']);
