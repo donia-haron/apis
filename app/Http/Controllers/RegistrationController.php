@@ -25,7 +25,7 @@ class RegistrationController extends Controller
 
     public function getbyparkingid($id)
     {
-        $today = Carbon::now()->toDateString("Y-m-d");
+        $today = date("Y-m-d");
         $registration = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->get();
         $response["registration"] = $registration;
 
@@ -82,12 +82,8 @@ class RegistrationController extends Controller
         return response()->json($response);
     }
 
-
-
     public function updatestatus(Request $request, $name)
     {
-
-
         $status = $request->status;
         DB::update('update registrations set status = ? where id = ?', [$status, $name]);
     }
