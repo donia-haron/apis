@@ -69,9 +69,15 @@ class AdminController extends Controller
     }
     public function getbyemail($id)
     {
-        $user = DB::table('users')->where('email', $id)->get();
-        $response['user'] = $user;
-        return response()->json($response);
+        $check = DB::table('users')->where('email', $id)->exists();
+        if ($check) {
+            $user = DB::table('users')->where('email', $id)->get();
+            $response['user'] = $user;
+            $response['code'] = 200;
+            return response()->json($response);
+        } else {
+            return response()->json(['message' => 'Record not found.', 'code' => 404]);
+        }
     }
     public function getallsecurity($id)
     {
