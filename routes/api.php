@@ -35,6 +35,7 @@ Route::post('/user/delete/{id}', [UserController::class, 'delete']);
 Route::post('/user/update/{id}', [UserController::class, 'update']);
 
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
+Route::get('/users/export/{id}', [UsersController::class, 'export']);
 
 //admin apis
 Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);
