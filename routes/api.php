@@ -27,13 +27,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //user apis
 Route::get('/user', [UserController::class, 'getall']);
 Route::get('/user/{id}', [UserController::class, 'getbyid']);
-
 Route::get('/useremail/{id}', [UserController::class, 'getusername']);
 Route::get('/user/car/{id}', [UserController::class, 'getusercar']);
 Route::post('/user/insert', [UserController::class, 'insert']);
 Route::post('/user/delete/{id}', [UserController::class, 'delete']);
 Route::post('/user/update/{id}', [UserController::class, 'update']);
-
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
 Route::get('/users/export/{id}', [UsersController::class, 'export']);
 
@@ -52,7 +50,6 @@ Route::delete('/security/delete/{id}', [AdminController::class, 'delete']);
 Route::post('/security/update/{id}', [AdminController::class, 'update']);
 
 //car apis
-
 Route::get('/car', [CarController::class, 'getall']);
 Route::get('/car/{id}', [CarController::class, 'getbyid']);
 Route::post('/car/insert', [CarController::class, 'insert']);
@@ -61,8 +58,6 @@ Route::post('/car/update/{id}', [CarController::class, 'update']);
 Route::get('/usercar/{id}', [CarController::class, 'getbyuser']);
 
 //nonregistered apis
-
-
 Route::get('/nonregistered', [NonregisteredController::class, 'getall']);
 Route::get('/nonregistered/{id}', [NonregisteredController::class, 'getbyid']);
 Route::post('/nonregistered/insert', [NonregisteredController::class, 'insert']);
@@ -71,28 +66,23 @@ Route::post('/nonregistered/update/{id}', [NonregisteredController::class, 'upda
 Route::get('/nonregistered/security/{id}', [NonregisteredController::class, 'getbysecurityman']);
 
 //parkingspace apis
-
 Route::get('/parkingspace', [ParkingspaceController::class, 'getall']);
 Route::get('/parkingspace/{id}', [ParkingspaceController::class, 'getbyid']);
 Route::get('/parkingspace/category/{id}', [ParkingspaceController::class, 'getbycategory']);
 Route::post('/parkingspace/insert', [ParkingspaceController::class, 'insert']);
 Route::post('/parkingspace/delete/{id}', [ParkingspaceController::class, 'delete']);
 Route::post('/parkingspace/update/{id}', [ParkingspaceController::class, 'update']);
-
 // Route::post('/parkingspace/securityman/{id}', [ParkingspaceController::class, 'getparkingsecurity']);
 
 
 
 //parkingslot apis
-
-
 Route::get('/parkingslot', [ParkingslotController::class, 'getall']);
 Route::get('/parkingslot/{id}', [ParkingslotController::class, 'getbyid']);
 Route::get('/parkingslot/parking/{id}', [ParkingslotController::class, 'getbyparkingid']);
 Route::post('/parkingslot/insert', [ParkingslotController::class, 'insert']);
 Route::post('/parkingslot/delete/{id}', [ParkingslotController::class, 'delete']);
 Route::post('/parkingslot/update/{id}', [ParkingslotController::class, 'update']);
-
 Route::post('/parkingslot/updatestatus/{id}', [ParkingslotController::class, 'updatestatus']);
 
 //registrations apis
@@ -104,5 +94,4 @@ Route::get('/registration/user/{id}', [RegistrationController::class, 'getbyuser
 Route::post('/registration/insert', [RegistrationController::class, 'insert']);
 Route::post('/registration/delete/{id}', [RegistrationController::class, 'delete']);
 Route::post('/registration/update/{id}', [RegistrationController::class, 'update']);
-
 Route::post('/registration/updatestatus/{id}', [RegistrationController::class, 'updatestatus']);

@@ -43,21 +43,30 @@ class ParkingslotController extends Controller
 
     public function delete($id)
     {
-        DB::delete('delete from parkingslots where name = ?', [$id]);
+        $parkingslot = parkingslot::find($id);
+        $parkingslot->delete();
+        return response()->json('Removed successfully.');
     }
     public function update(Request $request, $id)
     {
-        $name = $request->name;
-        $level = $request->level;
-        $parking_id = $request->parking_id;
-        $status = $request->status;
-        DB::update('update parkingslots set level = ?, status = ? where name = ? AND parking_id = ?', [$level, $status, $name, $parking_id]);
+        $parkingslot = parkingslot::find($id);
+        $parkingslot->name = $request->name;
+        $parkingslot->level = $request->level;
+        $parkingslot->parking_id = $request->parking_id;
+        $parkingslot->status = $request->status;
+        $parkingslot->update();
+        $response["parkingslot"] = $parkingslot;
+        $response['success'] = 1;
+        return response()->json($response);
     }
-    public function updatestatus(Request $request, $name)
+    public function updatestatus(Request $request, $id)
     {
-
-        $parking_id = $request->parking_id;
-        $status = $request->status;
-        DB::update('update parkingslots set status = ? where name = ? AND parking_id = ?', [$status, $name, $parking_id]);
+        $parkingslot = parkingslot::find($id);
+        $parkingslot->parking_id = $request->parking_id;
+        $parkingslot->status = $request->status;
+        $parkingslot->update();
+        $response["parkingslot"] = $parkingslot;
+        $response['success'] = 1;
+        return response()->json($response);
     }
 }
