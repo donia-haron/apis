@@ -75,7 +75,7 @@ class ParkingspaceController extends Controller
         $parkingspace->fees = $request->fees;
         $parkingspace->category = $request->category;
         $parkingspace->levels = $request->levels;
-        $parkingspace->img = $request->img;
+        // $parkingspace->img = $request->img;
         $parkingspace->update();
         $response["parkingspace"] = $parkingspace;
         $response['success'] = 1;
