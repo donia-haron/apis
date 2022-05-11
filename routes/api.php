@@ -33,7 +33,7 @@ Route::post('/user/insert', [UserController::class, 'insert']);
 Route::post('/user/delete/{id}', [UserController::class, 'delete']);
 Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
-Route::get('/users/export/{id}', [UsersController::class, 'export']);
+Route::get('/users/export/{id}', [UserController::class, 'export']);
 
 //admin apis
 Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);
@@ -41,6 +41,7 @@ Route::get('/admin/dashboard/{id}', [AdminController::class, 'getdailystatistics
 Route::get('/admin/chart/{id}', [AdminController::class, 'getweeklychart']);
 Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
+Route::get('/admin/reports/{id}', [AdminController::class, 'getreports']);
 
 //security apis
 Route::get('/security/{id}', [AdminController::class, 'getallsecurity']);
