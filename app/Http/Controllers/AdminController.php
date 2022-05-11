@@ -54,8 +54,8 @@ class AdminController extends Controller
     }
     public function getparkingid($id)
     {
-        $user = DB::table('users')->where('id', $id)->get();
-        $parking = DB::table('parkingspaces')->where('admin_id', $id)->get();
+        $user = DB::table('users')->where('id', $id)->orderBy('id', 'asc')->get();
+        $parking = DB::table('parkingspaces')->where('admin_id', $id)->orderBy('id', 'asc')->get();
         $response['user'] = $user;
         $response['parking'] = $parking;
         return response()->json($response);
@@ -63,7 +63,7 @@ class AdminController extends Controller
     public function getid($id)
     {
         $admin_id = DB::table('parkingspaces')->where('id', $id)->pluck('admin_id');
-        $user = DB::table('users')->where('id', $admin_id)->get();
+        $user = DB::table('users')->where('id', $admin_id)->orderBy('id', 'asc')->get();
         $response['user'] = $user;
         return response()->json($response);
     }
@@ -71,7 +71,7 @@ class AdminController extends Controller
     {
         $check = DB::table('users')->where('email', $id)->exists();
         if ($check) {
-            $user = DB::table('users')->where('email', $id)->get();
+            $user = DB::table('users')->where('email', $id)->orderBy('id', 'asc')->get();
             $response['user'] = $user;
             $response['code'] = 200;
             return response()->json($response);
@@ -81,7 +81,7 @@ class AdminController extends Controller
     }
     public function getallsecurity($id)
     {
-        $security = DB::table('parkingsecurities')->where('parking_id', $id)->get();
+        $security = DB::table('parkingsecurities')->where('parking_id', $id)->orderBy('id', 'asc')->get();
         $response['security'] = $security;
         return response()->json($response);
     }
