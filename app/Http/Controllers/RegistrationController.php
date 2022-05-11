@@ -19,21 +19,21 @@ class RegistrationController extends Controller
 
     public function getbyid($id)
     {
-        $registration = DB::table('registrations')->where('id', $id)->get();
+        $registration = DB::table('registrations')->where('id', $id)->orderBy('id', 'asc')->get();
         return response()->json($registration);
     }
 
     public function getbyparkingid($id)
     {
         $today = date("Y-m-d");
-        $registration = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->get();
+        $registration = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->orderBy('id', 'asc')->get();
         $response["registration"] = $registration;
 
         return response()->json($response);
     }
     public function getbyuserid($id)
     {
-        $registration = DB::table('registrations')->where('user_id', $id)->get();
+        $registration = DB::table('registrations')->where('user_id', $id)->orderBy('id', 'asc')->get();
         $response["registration"] = $registration;
 
         return response()->json($response);

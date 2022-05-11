@@ -19,13 +19,13 @@ class ParkingslotController extends Controller
 
     public function getbyid($id)
     {
-        $parkingslot = DB::table('parkingslots')->where('name', $id)->get();
+        $parkingslot = DB::table('parkingslots')->where('name', $id)->orderBy('id', 'asc')->get();
         return response()->json($parkingslot);
     }
 
     public function getbyparkingid($id)
     {
-        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
+        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->orderBy('id', 'asc')->get();
         return response()->json($parkingslot);
     }
 
