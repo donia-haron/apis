@@ -20,7 +20,7 @@ class AdminController extends Controller
         $filter = $request->filter;
         $reports = [];
         if ($filter == 'today') {
-            $date = date("Y-m-d");
+            $date = Carbon::now();
             switch ($type) {
                 case 'security':
                     $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get();
