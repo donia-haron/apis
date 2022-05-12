@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\user;
-use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\car;
 use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\DB as DB;
@@ -90,9 +88,5 @@ class UserController extends Controller
         $response["users"] = $user;
         $response['success'] = 1;
         return response()->json($response);
-    }
-    public function export()
-    {
-        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
