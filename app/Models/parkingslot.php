@@ -9,14 +9,14 @@ class parkingslot extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        
-        'name', 
+
+        'name',
         'level',
-        'parking_id', 
-        'status'
-    ]; 
+        'parking_id',
+        'status',
+        'created_at',
+    ];
 
 
     use HasFactory;
-
 }

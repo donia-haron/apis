@@ -42,16 +42,15 @@ Route::get('/admin/chart/{id}', [AdminController::class, 'getweeklychart']);
 Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
 Route::get('/admin/reports/{id}', [AdminController::class, 'getreports']);
-Route::get('/admin/report/custom/{id}', [AdminController::class, 'getcustomreports']);
+Route::get('/admin/reports/custom/{id}', [AdminController::class, 'getcustomreports']);
 Route::get('/admin/exportreg/{id}', [AdminController::class, 'exportregistration']);
 Route::get('/admin/exportsec/{id}', [AdminController::class, 'exportsecurity']);
 Route::get('/admin/exportslot/{id}', [AdminController::class, 'exportslots']);
 
-
 //security apis
 Route::get('/security/{id}', [AdminController::class, 'getallsecurity']);
 Route::post('/security/{id}', [AdminController::class, 'changestatus']);
-Route::post('/security/{id}/insert', [AdminController::class, 'insert']);
+Route::post('/security/insert/{id}', [AdminController::class, 'insert']);
 Route::delete('/security/delete/{id}', [AdminController::class, 'delete']);
 Route::post('/security/update/{id}', [AdminController::class, 'update']);
 

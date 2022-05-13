@@ -16,184 +16,98 @@ class AdminController extends Controller
 {
     public function getreports(Request $request, $id)
     {
-        $type = $request->type;
-        $filter = $request->filter;
-        $reports = [];
-        if ($filter == 'today') {
+        // input not read
+        $filter = $request->input("filter");
+        if ($filter == "today") {
             $date = Carbon::now();
-            switch ($type) {
-                case 'security':
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get();
-                    array_push($reports, $security);
-                    $response['reports'] = $reports;
-                    break;
-                case 'parkingslots':
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    array_push($reports, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-                case 'registrations':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $date)->get();
-                    array_push($reports, $registrations);
-                    $response['reports'] = $reports;
-                    break;
-                case 'all':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $date)->get();
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get();
-                    array_push($reports, $security, $registrations, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-            }
-            return response()->json($response);
-        } else if ($filter == 'this-week') {
+            $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $date)->get(['id', 'slot_name', 'date', 'status']);
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->where('created_at', $date)->get(['id', 'name', 'created_at', 'status']);
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get(['id', 'name', 'created_at', 'status']);
+            $security->toArray();
+            $parkingslot->toArray();
+            $registrations->toArray();
+            $response['security'] = $security;
+            $response['parkingslots'] = $parkingslot;
+            $response['registrations'] = $registrations;
+            $reports['reports'] = $response;
+            return response()->json($reports);
+        } else if ($filter == "this-week") {
             $startweek = Carbon::now()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
             $endweek = Carbon::now()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            switch ($type) {
-                case 'security':
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-                    array_push($reports, $security);
-                    $response['reports'] = $reports;
-                    break;
-                case 'parkingslots':
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    array_push($reports, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-                case 'registrations':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-                    array_push($reports, $registrations);
-                    $response['reports'] = $reports;
-                    break;
-                case 'all':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-                    array_push($reports, $security, $registrations, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-            }
-            return response()->json($response);
-        } else if ($filter == 'prev-week') {
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get(['id', 'slot_name', 'date', 'status']);
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $security->toArray();
+            $parkingslot->toArray();
+            $registrations->toArray();
+            $response['security'] = $security;
+            $response['parkingslots'] = $parkingslot;
+            $response['registrations'] = $registrations;
+            $reports['reports'] = $response;
+            return response()->json($reports);
+        } else if ($filter == "prev-week") {
             $startweek = Carbon::now()->subWeek()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
             $endweek = Carbon::now()->subWeek()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            switch ($type) {
-                case 'security':
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-                    array_push($reports, $security);
-                    $response['reports'] = $reports;
-                    break;
-                case 'parkingslots':
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    array_push($reports, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-                case 'registrations':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-                    array_push($reports, $registrations);
-                    $response['reports'] = $reports;
-                    break;
-                case 'all':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-                    array_push($reports, $security, $registrations, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-            }
-            return response()->json($response);
-        } else if ($filter == 'this-month') {
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get(['id', 'slot_name', 'date', 'status']);
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $security->toArray();
+            $parkingslot->toArray();
+            $registrations->toArray();
+            $response['security'] = $security;
+            $response['parkingslots'] = $parkingslot;
+            $response['registrations'] = $registrations;
+            $reports['reports'] = $response;
+            return response()->json($reports);
+        } else if ($filter == "this-month") {
             $startmonth = Carbon::now()->format('m');
             $endmonth = Carbon::now()->format('m');
-            switch ($type) {
-                case 'security':
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-                    array_push($reports, $security);
-                    $response['reports'] = $reports;
-                    break;
-                case 'parkingslots':
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    array_push($reports, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-                case 'registrations':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-                    array_push($reports, $registrations);
-                    $response['reports'] = $reports;
-                    break;
-                case 'all':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-                    array_push($reports, $security, $registrations, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-            }
-            return response()->json($response);
-        } else if ($filter == 'prev-month') {
+
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get(['id', 'slot_name', 'date', 'status']);
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $security->toArray();
+            $parkingslot->toArray();
+            $registrations->toArray();
+            $response['security'] = $security;
+            $response['parkingslots'] = $parkingslot;
+            $response['registrations'] = $registrations;
+            $reports['reports'] = $response;
+            return response()->json($reports);
+        } else if ($filter == "prev-month") {
             $startmonth = Carbon::now()->subMonth()->format('m');
             $endmonth = Carbon::now()->subMonth()->format('m');
-            switch ($type) {
-                case 'security':
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-                    array_push($reports, $security);
-                    $response['reports'] = $reports;
-                    break;
-                case 'parkingslots':
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    array_push($reports, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-                case 'registrations':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-                    array_push($reports, $registrations);
-                    $response['reports'] = $reports;
-                    break;
-                case 'all':
-                    $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-                    $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                    $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-                    array_push($reports, $security, $registrations, $parkingslot);
-                    $response['reports'] = $reports;
-                    break;
-            }
-            return response()->json($response);
+
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get(['id', 'slot_name', 'date', 'status']);
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $security->toArray();
+            $parkingslot->toArray();
+            $registrations->toArray();
+            $response['security'] = $security;
+            $response['parkingslots'] = $parkingslot;
+            $response['registrations'] = $registrations;
+            $reports['reports'] = $response;
+            return response()->json($reports);
         } else {
-            $response['reports'] = $reports;
+            $response['message'] = 'Not Found';
+            $response['code'] = 404;
             return response()->json($response);
         }
     }
     public function getcustomreports(Request $request, $id)
     {
         $reports = [];
-        $type = $request->type;
-        $from = $request->from;
-        $to = $request->to;
-        switch ($type) {
-            case 'security':
-                $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
-                array_push($reports, $security);
-                $response['reports'] = $reports;
-                break;
-            case 'parkingslots':
-                $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                array_push($reports, $parkingslot);
-                $response['reports'] = $reports;
-                break;
-            case 'registrations':
-                $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get();
-                array_push($reports, $registrations);
-                $response['reports'] = $reports;
-                break;
-            case 'all':
-                $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get();
-                $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->get();
-                $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
-                array_push($reports, $security, $registrations, $parkingslot);
-                $response['reports'] = $reports;
-                break;
-        }
-        return response()->json($response);
+        $from = $request->input('from');
+        $to = $request->input('to');
+        $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get('id', 'slot_name', 'date', 'status');
+        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get('id', 'name', 'created_at', 'status');
+        $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get('id', 'name', 'created_at', 'status');
+        $response['security'] = $security;
+        $response['parkingslots'] = $parkingslot;
+        $response['registrations'] = $registrations;
+        $reports['reports'] = $response;
+        return response()->json($reports);
     }
 
     public function getdailystatistics($id)
@@ -279,6 +193,7 @@ class AdminController extends Controller
     }
     public function insert(Request $request, $id)
     {
+        $date = Carbon::now();
         $security = new parkingsecurity();
         $security->parking_id = $id;
         $security->security_id = $request->security_id;
@@ -290,6 +205,7 @@ class AdminController extends Controller
         $security->work_hours = $request->work_hours;
         $security->phone = $request->phone;
         $security->status = $request->status;
+        $security->created_at = $date;
         $security->save();
         $response["security"] = $security;
         return response()->json($response);
