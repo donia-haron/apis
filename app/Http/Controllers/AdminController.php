@@ -11,18 +11,18 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use Illuminate\Support\Facades\DB as DB;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
-    public function getreports(Request $request, $id)
+    public function getreports($id, $filter)
     {
         // input not read
-        $filter = $request->input("filter", "today");
         if ($filter == "today") {
             $date = Carbon::now();
-            $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', "2022-04-20")->get();
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->where('created_at', $date)->get();
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get();
+            $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $date)->orderBy('date', 'asc')->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->where('created_at', $date)->orderBy('created_at', 'asc')->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->orderBy('created_at', 'asc')->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -32,11 +32,11 @@ class AdminController extends Controller
             $reports['reports'] = $response;
             return response()->json($reports);
         } else if ($filter == "this-week") {
-            $startweek = Carbon::now()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-            $endweek = Carbon::now()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
+            $startweek = Carbon::now()->startOfWeek()->format('Y-m-d');
+            $endweek = Carbon::now()->format('Y-m-d');
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->orderBy('date', 'asc')->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->orderBy('created_at', 'asc')->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->orderBy('created_at', 'asc')->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -46,11 +46,11 @@ class AdminController extends Controller
             $reports['reports'] = $response;
             return response()->json($reports);
         } else if ($filter == "prev-week") {
-            $startweek = Carbon::now()->subWeek()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-            $endweek = Carbon::now()->subWeek()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
+            $startweek = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d');
+            $endweek = Carbon::now()->subWeek()->format('Y-m-d');
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->orderBy('date', 'asc')->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->orderBy('created_at', 'asc')->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->orderBy('created_at', 'asc')->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -60,12 +60,12 @@ class AdminController extends Controller
             $reports['reports'] = $response;
             return response()->json($reports);
         } else if ($filter == "this-month") {
-            $startmonth = Carbon::now()->format('m');
-            $endmonth = Carbon::now()->format('m');
+            $startmonth = Carbon::now()->startOfMonth()->format('Y-m-d');
+            $endmonth = Carbon::now()->format('Y-m-d');
 
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->orderBy('date', 'asc')->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->orderBy('created_at', 'asc')->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->orderBy('created_at', 'asc')->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -75,12 +75,12 @@ class AdminController extends Controller
             $reports['reports'] = $response;
             return response()->json($reports);
         } else if ($filter == "prev-month") {
-            $startmonth = Carbon::now()->subMonth()->format('m');
-            $endmonth = Carbon::now()->subMonth()->format('m');
+            $startmonth = Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d');
+            $endmonth = Carbon::now()->subMonth()->format('Y-m-d');
 
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->orderBy('date', 'asc')->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->orderBy('created_at', 'asc')->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->orderBy('created_at', 'asc')->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();

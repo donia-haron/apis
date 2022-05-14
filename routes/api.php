@@ -41,7 +41,7 @@ Route::get('/admin/dashboard/{id}', [AdminController::class, 'getdailystatistics
 Route::get('/admin/chart/{id}', [AdminController::class, 'getweeklychart']);
 Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
 Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
-Route::get('/admin/reports/{id}', [AdminController::class, 'getreports']);
+Route::get('/admin/reports/{id}/{filter}', [AdminController::class, 'getreports']);
 Route::get('/admin/reports/custom/{id}', [AdminController::class, 'getcustomreports']);
 Route::get('/admin/exportreg/{id}', [AdminController::class, 'exportregistration']);
 Route::get('/admin/exportsec/{id}', [AdminController::class, 'exportsecurity']);
