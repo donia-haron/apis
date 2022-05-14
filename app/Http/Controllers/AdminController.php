@@ -17,12 +17,12 @@ class AdminController extends Controller
     public function getreports(Request $request, $id)
     {
         // input not read
-        $filter = $request->input("filter");
+        $filter = $request->input("filter", "today");
         if ($filter == "today") {
             $date = Carbon::now();
-            $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', $date)->get(['id', 'slot_name', 'date', 'status']);
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->where('created_at', $date)->get(['id', 'name', 'created_at', 'status']);
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get(['id', 'name', 'created_at', 'status']);
+            $registrations = DB::table('registrations')->where('parking_id', $id)->where('date', "2022-04-20")->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->where('created_at', $date)->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->where('created_at', $date)->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -34,9 +34,9 @@ class AdminController extends Controller
         } else if ($filter == "this-week") {
             $startweek = Carbon::now()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
             $endweek = Carbon::now()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get(['id', 'slot_name', 'date', 'status']);
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -48,9 +48,9 @@ class AdminController extends Controller
         } else if ($filter == "prev-week") {
             $startweek = Carbon::now()->subWeek()->startOfWeek(Carbon::SATURDAY)->format('Y-m-d');
             $endweek = Carbon::now()->subWeek()->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get(['id', 'slot_name', 'date', 'status']);
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get(['id', 'name', 'created_at', 'status']);
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startweek, $endweek])->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startweek, $endweek])->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -63,9 +63,9 @@ class AdminController extends Controller
             $startmonth = Carbon::now()->format('m');
             $endmonth = Carbon::now()->format('m');
 
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get(['id', 'slot_name', 'date', 'status']);
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -78,9 +78,9 @@ class AdminController extends Controller
             $startmonth = Carbon::now()->subMonth()->format('m');
             $endmonth = Carbon::now()->subMonth()->format('m');
 
-            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get(['id', 'slot_name', 'date', 'status']);
-            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
-            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get(['id', 'name', 'created_at', 'status']);
+            $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$startmonth, $endmonth])->get();
+            $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
+            $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$startmonth, $endmonth])->get();
             $security->toArray();
             $parkingslot->toArray();
             $registrations->toArray();
@@ -100,9 +100,9 @@ class AdminController extends Controller
         $reports = [];
         $from = $request->input('from');
         $to = $request->input('to');
-        $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get('id', 'slot_name', 'date', 'status');
-        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get('id', 'name', 'created_at', 'status');
-        $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get('id', 'name', 'created_at', 'status');
+        $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get();
+        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
+        $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
         $response['security'] = $security;
         $response['parkingslots'] = $parkingslot;
         $response['registrations'] = $registrations;
@@ -152,7 +152,7 @@ class AdminController extends Controller
     public function getparkingid($id)
     {
         $user = DB::table('users')->where('id', $id)->orderBy('id', 'asc')->get();
-        $parking = DB::table('parkingspaces')->where('admin_id', $id)->orderBy('id', 'asc')->get();
+        $parking = DB::table('parkingspaces')->where('admin_id', $id)->get();
         $response['user'] = $user;
         $response['parking'] = $parking;
         return response()->json($response);
@@ -160,7 +160,7 @@ class AdminController extends Controller
     public function getid($id)
     {
         $admin_id = DB::table('parkingspaces')->where('id', $id)->pluck('admin_id');
-        $user = DB::table('users')->where('id', $admin_id)->orderBy('id', 'asc')->get();
+        $user = DB::table('users')->where('id', $admin_id)->get();
         $response['user'] = $user;
         return response()->json($response);
     }
@@ -168,7 +168,7 @@ class AdminController extends Controller
     {
         $check = DB::table('users')->where('email', $id)->exists();
         if ($check) {
-            $user = DB::table('users')->where('email', $id)->orderBy('id', 'asc')->get();
+            $user = DB::table('users')->where('email', $id)->get();
             $response['user'] = $user;
             $response['code'] = 200;
             return response()->json($response);
