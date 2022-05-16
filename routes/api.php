@@ -33,7 +33,7 @@ Route::post('/user/insert', [UserController::class, 'insert']);
 Route::post('/user/delete/{id}', [UserController::class, 'delete']);
 Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
-// Route::get('/users/export/{id}', [UserController::class, 'export']);
+Route::post('/user/newpass/{email}', [UserController::class, 'newpass']);
 
 //admin apis
 Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);

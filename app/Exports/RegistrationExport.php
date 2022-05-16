@@ -6,8 +6,9 @@ use App\Models\registration;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class RegistrationExport implements FromQuery, WithHeadings
+class RegistrationExport implements FromQuery, WithHeadings, WithMapping
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -26,11 +27,24 @@ class RegistrationExport implements FromQuery, WithHeadings
     {
         return [
             'User National ID',
-            'Date',
+            'Car Plate No.',
+            'Created At',
             'Status',
             'Slot Name',
             'Leave Time',
             'Check In Time',
+        ];
+    }
+    public function map($registration): array
+    {
+        return [
+            $registration->user_id,
+            $registration->car_id,
+            $registration->date,
+            $registration->status,
+            $registration->slot_name,
+            $registration->leave_time,
+            $registration->checkin_time,
         ];
     }
 }

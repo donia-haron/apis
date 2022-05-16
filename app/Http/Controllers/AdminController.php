@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Exports\RegistrationExport;
 use App\Exports\SecurityExport;
 use App\Exports\SlotExport;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Models\parkingsecurity;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Exception;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class AdminController extends Controller
 {
@@ -237,14 +242,20 @@ class AdminController extends Controller
     }
     public function exportregistration($id)
     {
-        return (new RegistrationExport($id))->download('registrations.xlsx');
+        return (new RegistrationExport($id))->download('registrations.csv', \Maatwebsite\Excel\Excel::CSV, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
     public function exportsecurity($id)
     {
-        return (new SecurityExport($id))->download('securities.xlsx');
+        return (new SecurityExport($id))->download('securities.csv', \Maatwebsite\Excel\Excel::CSV, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
     public function exportslots($id)
     {
-        return (new SlotExport($id))->download('parkingslots.xlsx');
+        return (new SlotExport($id))->download('parkingslots.csv', \Maatwebsite\Excel\Excel::CSV, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }
