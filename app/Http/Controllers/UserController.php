@@ -89,13 +89,5 @@ class UserController extends Controller
         $response['success'] = 1;
         return response()->json($response);
     }
-    public function newpass(Request $request, $email)
-    {
-        $user =  new user();
-        $user = user::find($email);
-        $user->password = $request->password;
-        $user->update();
-        $response['user'] = $user;
-        return response()->json($response);
-    }
+    
 }

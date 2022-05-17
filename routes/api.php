@@ -33,16 +33,16 @@ Route::post('/user/insert', [UserController::class, 'insert']);
 Route::post('/user/delete/{id}', [UserController::class, 'delete']);
 Route::post('/user/update/{id}', [UserController::class, 'update']);
 Route::post('/user/updatepass/{id}', [UserController::class, 'updatepass']);
-Route::post('/user/newpass/{email}', [UserController::class, 'newpass']);
 
 //admin apis
 Route::get('/admin/{id}', [AdminController::class, 'getbyemail']);
+Route::post('/admin/newpass/{id}', [AdminController::class, 'newpass']);
 Route::get('/admin/dashboard/{id}', [AdminController::class, 'getdailystatistics']);
 Route::get('/admin/chart/{id}', [AdminController::class, 'getweeklychart']);
 Route::get('/admin/parking/{id}', [AdminController::class, 'getparkingid']);
-Route::get('/admin/id/{id}', [AdminController::class, 'getid']);
+Route::get('/admin/user/{id}', [AdminController::class, 'getadmin']);
 Route::get('/admin/reports/{id}/{filter}', [AdminController::class, 'getreports']);
-Route::get('/admin/reports/custom/{id}', [AdminController::class, 'getcustomreports']);
+Route::get('/admin/reports/custom/{id}/{from}/{to}', [AdminController::class, 'getcustomreports']);
 Route::get('/admin/exportreg/{id}', [AdminController::class, 'exportregistration']);
 Route::get('/admin/exportsec/{id}', [AdminController::class, 'exportsecurity']);
 Route::get('/admin/exportslot/{id}', [AdminController::class, 'exportslots']);

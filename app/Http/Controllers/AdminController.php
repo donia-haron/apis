@@ -5,18 +5,12 @@ namespace App\Http\Controllers;
 use App\Exports\RegistrationExport;
 use App\Exports\SecurityExport;
 use App\Exports\SlotExport;
-use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Models\parkingsecurity;
+use App\Models\user;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Exception;
-use Maatwebsite\Excel\Facades\Excel as Excel;
 use Illuminate\Support\Facades\DB as DB;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Excel as ExcelExcel;
-use PhpOffice\PhpSpreadsheet\Writer\Xls;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class AdminController extends Controller
 {
@@ -100,11 +94,9 @@ class AdminController extends Controller
             return response()->json($response);
         }
     }
-    public function getcustomreports(Request $request, $id)
+    public function getcustomreports($id, $from, $to)
     {
         $reports = [];
-        $from = $request->input('from');
-        $to = $request->input('to');
         $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get();
         $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
         $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
@@ -162,7 +154,7 @@ class AdminController extends Controller
         $response['parking'] = $parking;
         return response()->json($response);
     }
-    public function getid($id)
+    public function getadmin($id)
     {
         $admin_id = DB::table('parkingspaces')->where('id', $id)->pluck('admin_id');
         $user = DB::table('users')->where('id', $admin_id)->get();
@@ -257,5 +249,13 @@ class AdminController extends Controller
         return (new SlotExport($id))->download('parkingslots.csv', \Maatwebsite\Excel\Excel::CSV, [
             'Content-Type' => 'text/csv',
         ]);
+    }
+    public function newpass(Request $request, $id = null)
+    {
+        $password = $request->input('password');
+        DB::update('update users set password = ? where email = ?', [$password, $id]);
+        $user = DB::table('users')->where('email', $id)->get();
+        $response['user'] = $user;
+        return response()->json($response);
     }
 }
