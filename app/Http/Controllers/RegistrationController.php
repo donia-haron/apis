@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\parkingslot;
 use Illuminate\Http\Request;
 use App\Models\registration;
 use Carbon\Carbon;
@@ -28,7 +29,6 @@ class RegistrationController extends Controller
         $today = date("Y-m-d");
         $registration = DB::table('registrations')->where('parking_id', $id)->where('date', $today)->orderBy('id', 'asc')->get();
         $response["registration"] = $registration;
-
         return response()->json($response);
     }
     public function getbyuserid($id)
@@ -45,14 +45,17 @@ class RegistrationController extends Controller
         $registration->car_id = $request->car_id;
         $registration->date = $request->date;
         $registration->status = $request->status;
-        $registration->slot_name = $request->slot_name;
+        $slot_name = $registration->slot_name = $request->slot_name;
         $registration->leave_time = $request->leave_time;
         $registration->checkin_time = $request->checkin_time;
         $registration->parking_id = $request->parking_id;
         $registration->day = $request->day;
         $registration->save();
+        $status = 'unavailable';
+        DB::update('update parkingslots set status = ? where name = ?', [$status, $slot_name]);
+        $slot = DB::table('parkingslots')->where('name', $slot_name)->get();
         $response["registration"] = $registration;
-
+        $response['slot'] = $slot;
         return response()->json($response);
     }
 

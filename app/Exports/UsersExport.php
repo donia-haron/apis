@@ -6,7 +6,7 @@ use App\Models\user;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class UsersExport implements FromCollection
+class UsersExport implements FromCollection, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection

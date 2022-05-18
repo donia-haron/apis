@@ -20,6 +20,7 @@ class parkingsecurity extends Model
         'work_hours',
         'phone',
         'status',
+        'created_at',
     ];
     use HasFactory;
 }

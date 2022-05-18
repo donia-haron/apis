@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\parkingslot;
+use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\DB as DB;
 
 class ParkingslotController extends Controller
@@ -31,11 +33,13 @@ class ParkingslotController extends Controller
 
     public function insert(Request $request)
     {
+        $date = Carbon::now();
         $parkingslot = new parkingslot();
         $parkingslot->name = $request->name;
         $parkingslot->level = $request->level;
         $parkingslot->parking_id = $request->parking_id;
         $parkingslot->status = $request->status;
+        $parkingslot->created_at = $date;
         $parkingslot->save();
         $response['parkingslot'] = $parkingslot;
         return response()->json($response);
@@ -68,5 +72,13 @@ class ParkingslotController extends Controller
         $response["parkingslot"] = $parkingslot;
         $response['success'] = 1;
         return response()->json($response);
+    }
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->call(function () {
+            $available = 'available';
+            $unavailable = 'unavailable';
+            DB::update('update parkingslots set status = ? where status = ?', [$available, $unavailable]);
+        })->daily();
     }
 }
