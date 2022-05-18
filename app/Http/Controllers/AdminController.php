@@ -97,9 +97,9 @@ class AdminController extends Controller
     public function getcustomreports($id, $from, $to)
     {
         $reports = [];
-        $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->get();
-        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
-        $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->get();
+        $registrations = DB::table('registrations')->where('parking_id', $id)->whereBetween('date', [$from, $to])->orderBy('date', 'asc')->get();
+        $parkingslot = DB::table('parkingslots')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->orderBy('created_at', 'asc')->get();
+        $security = DB::table('parkingsecurities')->where('parking_id', $id)->whereBetween('created_at', [$from, $to])->orderBy('created_at', 'asc')->get();
         $response['security'] = $security;
         $response['parkingslots'] = $parkingslot;
         $response['registrations'] = $registrations;
@@ -226,8 +226,6 @@ class AdminController extends Controller
         $security->dob = $request->dob;
         $security->work_hours = $request->work_hours;
         $security->phone = $request->phone;
-        // $security->status = $request->status;
-        // $security->created_at = $request->created_at;
         $security->update();
         $response["security"] = $security;
         return response()->json($response);
@@ -250,7 +248,7 @@ class AdminController extends Controller
             'Content-Type' => 'text/csv',
         ]);
     }
-    public function newpass(Request $request, $id = null)
+    public function newpass(Request $request, $id)
     {
         $password = $request->input('password');
         DB::update('update users set password = ? where email = ?', [$password, $id]);
