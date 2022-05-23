@@ -73,12 +73,4 @@ class ParkingslotController extends Controller
         $response['success'] = 1;
         return response()->json($response);
     }
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->call(function () {
-            $available = 'available';
-            $unavailable = 'unavailable';
-            DB::update('update parkingslots set status = ? where status = ?', [$available, $unavailable]);
-        })->daily();
-    }
 }
